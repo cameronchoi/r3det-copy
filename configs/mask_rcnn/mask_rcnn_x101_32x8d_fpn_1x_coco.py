@@ -13,7 +13,7 @@ model = dict(
         style='pytorch'))
 
 dataset_type = 'CocoDataset'
-data_root = '/data/coco/'
+data_root = '/home/linux/data/coco/'
 img_norm_cfg = dict(
     mean=[103.530, 116.280, 123.675],
     std=[57.375, 57.120, 58.395],
