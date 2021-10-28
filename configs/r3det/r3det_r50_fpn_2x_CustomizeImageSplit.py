@@ -1,7 +1,7 @@
 _base_ = [
-    '../_base_/models/r3det_r50_fpn.py',
-    '../_base_/datasets/dotav1_rotational_detection.py',
-    '../_base_/schedules/schedule_1x.py'
+    'models/r3det_r50_fpn.py',
+    'datasets/dotav1_rotational_detection.py',
+    'schedules/schedule_1x.py'
 ]
 
 # runtime settings
