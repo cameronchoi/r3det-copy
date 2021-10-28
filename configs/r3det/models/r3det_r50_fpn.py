@@ -1,6 +1,62 @@
 # model settings
 model = dict(
     type='R3Det',
+    train_cfg=dict(
+        s0=dict(
+            assigner=dict(
+                type='MaxIoUAssigner',
+                pos_iou_thr=0.5,
+                neg_iou_thr=0.4,
+                min_pos_iou=0,
+                ignore_iof_thr=-1,
+                iou_calculator=dict(type='RBboxOverlaps2D')),
+            allowed_border=-1,
+            pos_weight=-1,
+            debug=False),
+        sr=[
+            dict(
+                assigner=dict(
+                    type='MaxIoUAssigner',
+                    pos_iou_thr=0.6,
+                    neg_iou_thr=0.5,
+                    min_pos_iou=0,
+                    ignore_iof_thr=-1,
+                    iou_calculator=dict(type='RBboxOverlaps2D')),
+                allowed_border=-1,
+                pos_weight=-1,
+                debug=False),
+            dict(
+                assigner=dict(
+                    type='MaxIoUAssigner',
+                    pos_iou_thr=0.7,
+                    neg_iou_thr=0.6,
+                    min_pos_iou=0,
+                    ignore_iof_thr=-1,
+                    iou_calculator=dict(type='RBboxOverlaps2D')),
+                allowed_border=-1,
+                pos_weight=-1,
+                debug=False
+            )
+        ],
+        stage_loss_weights=[1.0, 1.0]
+    ),
+    test_cfg=dict(
+        nms_pre=1000,
+        score_thr=0.1,
+        nms=dict(type='rnms', iou_thr=0.05),
+        max_per_img=100,
+        merge_cfg=dict(
+            nms_pre=2000,
+            score_thr=0.1,
+            nms=dict(type='rnms', iou_thr={
+                'roundabout': 0.1, 'tennis-court': 0.3, 'swimming-pool': 0.1, 'storage-tank': 0.1,
+                'soccer-ball-field': 0.3, 'small-vehicle': 0.05, 'ship': 0.05, 'plane': 0.3,
+                'large-vehicle': 0.05, 'helicopter': 0.2, 'harbor': 0.0001, 'ground-track-field': 0.3,
+                'bridge': 0.0001, 'basketball-court': 0.3, 'baseball-diamond': 0.3
+            }),
+            max_per_img=1000,
+        )
+    ),
     pretrained='torchvision://resnet50',
     backbone=dict(
         type='ResNet',
@@ -105,64 +161,3 @@ model = dict(
     ]
 )
 # training and testing settings
-train_cfg = dict(
-    s0=dict(
-        assigner=dict(
-            type='MaxIoUAssigner',
-            pos_iou_thr=0.5,
-            neg_iou_thr=0.4,
-            min_pos_iou=0,
-            ignore_iof_thr=-1,
-            iou_calculator=dict(type='RBboxOverlaps2D')),
-        allowed_border=-1,
-        pos_weight=-1,
-        debug=False),
-    sr=[
-        dict(
-            assigner=dict(
-                type='MaxIoUAssigner',
-                pos_iou_thr=0.6,
-                neg_iou_thr=0.5,
-                min_pos_iou=0,
-                ignore_iof_thr=-1,
-                iou_calculator=dict(type='RBboxOverlaps2D')),
-            allowed_border=-1,
-            pos_weight=-1,
-            debug=False),
-        dict(
-            assigner=dict(
-                type='MaxIoUAssigner',
-                pos_iou_thr=0.7,
-                neg_iou_thr=0.6,
-                min_pos_iou=0,
-                ignore_iof_thr=-1,
-                iou_calculator=dict(type='RBboxOverlaps2D')),
-            allowed_border=-1,
-            pos_weight=-1,
-            debug=False
-        )
-    ],
-    stage_loss_weights=[1.0, 1.0]
-)
-
-merge_nms_iou_thr_dict = {
-    'roundabout': 0.1, 'tennis-court': 0.3, 'swimming-pool': 0.1, 'storage-tank': 0.1,
-    'soccer-ball-field': 0.3, 'small-vehicle': 0.05, 'ship': 0.05, 'plane': 0.3,
-    'large-vehicle': 0.05, 'helicopter': 0.2, 'harbor': 0.0001, 'ground-track-field': 0.3,
-    'bridge': 0.0001, 'basketball-court': 0.3, 'baseball-diamond': 0.3
-}
-
-merge_cfg = dict(
-    nms_pre=2000,
-    score_thr=0.1,
-    nms=dict(type='rnms', iou_thr=merge_nms_iou_thr_dict),
-    max_per_img=1000,
-)
-
-test_cfg = dict(
-    nms_pre=1000,
-    score_thr=0.1,
-    nms=dict(type='rnms', iou_thr=0.05),
-    max_per_img=100,
-    merge_cfg=merge_cfg
-)
