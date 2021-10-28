@@ -53,8 +53,8 @@ def test_config_build_detector():
 
         detector = build_detector(
             config_mod.model,
-            train_cfg=config_mod.train_cfg,
-            test_cfg=config_mod.test_cfg)
+            train_cfg=config_mod.get('train_cfg'),
+            test_cfg=config_mod.get('test_cfg'))
         assert detector is not None
 
         optimizer = build_optimizer(detector, config_mod.optimizer)

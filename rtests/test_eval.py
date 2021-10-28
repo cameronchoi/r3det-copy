@@ -18,7 +18,7 @@ data_loader = build_dataloader(
     dist=False,
     shuffle=False)
 
-model = build_detector(cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
+model = build_detector(cfg.model, train_cfg=None, test_cfg=cfg.get('test_cfg'))
 
 checkpoint = load_checkpoint(model, "../work_dirs/r3det_r50_fpn_2x_20200616/epoch_24.pth", map_location='cpu')
 

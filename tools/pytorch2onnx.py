@@ -92,7 +92,7 @@ def main():
     cfg.model.pretrained = None
 
     # build the model and load checkpoint
-    model = build_detector(cfg.model, train_cfg=None, test_cfg=cfg.test_cfg)
+    model = build_detector(cfg.model, train_cfg=None, test_cfg=cfg.get('test_cfg'))
     load_checkpoint(model, args.checkpoint, map_location='cpu')
     # Only support CPU mode for now
     model.cpu().eval()

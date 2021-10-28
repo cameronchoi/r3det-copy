@@ -14,7 +14,7 @@ data_loader = build_dataloader(datasets,
                                0,
                                dist=False)
 
-model = build_detector(cfg.model, train_cfg=cfg.train_cfg, test_cfg=cfg.test_cfg)
+model = build_detector(cfg.model, train_cfg=cfg.get('train_cfg'), test_cfg=cfg.get('test_cfg'))
 model = MMDataParallel(model, device_ids=[0])
 
 for data in data_loader:
